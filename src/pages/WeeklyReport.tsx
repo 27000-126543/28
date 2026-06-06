@@ -45,10 +45,8 @@ ChartJS.register(
 );
 
 export const WeeklyReport: React.FC = () => {
-  const { player, weeklyReport } = useGameStore((s) => ({
-    player: s.player,
-    weeklyReport: s.weeklyReport,
-  }));
+  const store = useGameStore();
+  const { player, weeklyReport } = store;
 
   const chartOptions = {
     responsive: true,

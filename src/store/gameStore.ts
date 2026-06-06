@@ -28,7 +28,6 @@ import {
   mockPendingApplications,
   mockPromotionRequests,
   mockWeeklyReport,
-  mockActiveWar,
   mockPlayer,
   mockEnemyGuilds,
   mockMarketTrades,
@@ -104,7 +103,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   pendingApplications: mockPendingApplications,
   promotionRequests: mockPromotionRequests,
   weeklyReport: mockWeeklyReport,
-  activeWar: mockActiveWar,
+  activeWar: null,
   enemyGuilds: mockEnemyGuilds,
   marketTrades: mockMarketTrades,
   completedTaskHistory: mockCompletedTasks,
@@ -535,7 +534,6 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     const updatedMembers = state.guild.members.map((m) => {
       if (!task.members.includes(m.id)) return m;
-      const memberExp = Math.floor(exp / task.members.length);
       let newLevel = m.level;
       let newPower = m.power;
       if (success) {

@@ -21,23 +21,8 @@ import { useGameStore } from '../store/gameStore';
 import { GuildBadge } from '../components/GuildBadge';
 
 export const CrossServerWar: React.FC = () => {
-  const {
-    player,
-    guild,
-    activeWar,
-    enemyGuilds,
-    declareWar,
-    updateWarProgress,
-    clearActiveWar,
-  } = useGameStore((s) => ({
-    player: s.player,
-    guild: s.guild,
-    activeWar: s.activeWar,
-    enemyGuilds: s.enemyGuilds,
-    declareWar: s.declareWar,
-    updateWarProgress: s.updateWarProgress,
-    clearActiveWar: s.clearActiveWar,
-  }));
+  const store = useGameStore();
+  const { player, guild, activeWar, enemyGuilds } = store;
 
   const [showDeclareModal, setShowDeclareModal] = useState(false);
   const logsRef = useRef<HTMLDivElement>(null);
@@ -45,14 +30,14 @@ export const CrossServerWar: React.FC = () => {
   useEffect(() => {
     if (activeWar && activeWar.status === 'active') {
       const interval = setInterval(() => {
-        const ended = updateWarProgress();
+        const ended = store.updateWarProgress();
         if (ended) {
           clearInterval(interval);
         }
       }, 2000);
       return () => clearInterval(interval);
     }
-  }, [activeWar, updateWarProgress]);
+  }, [activeWar, store]);
 
   useEffect(() => {
     if (logsRef.current) {
@@ -295,7 +280,7 @@ export const CrossServerWar: React.FC = () => {
 
             {activeWar.status === 'ended' && (
               <div className="mt-6 flex justify-center">
-                <button onClick={clearActiveWar} className="fantasy-btn-primary flex items-center gap-2">
+                <button onClick={store.clearActiveWar} className="fantasy-btn-primary flex items-center gap-2">
                   <Flag size={18} /> 结束战争
                 </button>
               </div>
@@ -418,7 +403,7 @@ export const CrossServerWar: React.FC = () => {
                     </div>
                     <button
                       onClick={() => {
-                        declareWar(enemy.id);
+                        store.declareWar(enemy.id);
                         setShowDeclareModal(false);
                       }}
                       className="fantasy-btn-danger flex items-center gap-2 shrink-0"

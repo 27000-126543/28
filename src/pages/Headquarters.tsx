@@ -8,7 +8,6 @@ import {
   Coins,
   Layers,
   Sparkles,
-  Shield,
   Zap,
   Box,
   Sword,
@@ -46,8 +45,9 @@ const buildingColors: Record<BuildingType, { gradient: string; border: string; t
 };
 
 export const Headquarters: React.FC = () => {
-  const { player, guild, upgradeBuilding, getGuildBuildingEffects } = useGameStore();
-  const effects = getGuildBuildingEffects();
+  const store = useGameStore();
+  const { player, guild } = store;
+  const effects = store.getGuildBuildingEffects();
   const expPercent = (player.exp / player.expToNext) * 100;
 
   const layoutBuildings = [
@@ -255,7 +255,7 @@ export const Headquarters: React.FC = () => {
                   </div>
 
                   <button
-                    onClick={() => upgradeBuilding(building.type)}
+                    onClick={() => store.upgradeBuilding(building.type)}
                     disabled={!canAfford}
                     className={`w-full fantasy-btn-primary flex items-center justify-center gap-2`}
                   >

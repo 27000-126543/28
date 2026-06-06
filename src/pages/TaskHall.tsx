@@ -39,50 +39,31 @@ const eventTypeInfo: Record<BattleEvent['type'], { icon: React.ReactNode; color:
 };
 
 export const TaskHall: React.FC = () => {
+  const store = useGameStore();
   const {
     guild,
-    recommendTasks,
-    startTask,
     activeTask,
-    updateTaskProgress,
     taskResult,
     battleLog,
     battleEvents,
-    clearTaskResult,
     player,
-    notification,
-    setNotification,
-  } = useGameStore((s) => ({
-    recommendTasks: s.recommendTasks,
-    activeTask: s.activeTask,
-    taskResult: s.taskResult,
-    battleLog: s.battleLog,
-    battleEvents: s.battleEvents,
-    startTask: s.startTask,
-    updateTaskProgress: s.updateTaskProgress,
-    completeTask: s.completeTask,
-    clearTaskResult: s.clearTaskResult,
-    guild: s.guild,
-    player: s.player,
-    notification: s.notification,
-    setNotification: s.setNotification,
-  }));
+  } = store;
 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [showResultModal, setShowResultModal] = useState(false);
   const battleLogRef = useRef<HTMLDivElement>(null);
 
-  const recommendedTasks = recommendTasks();
+  const recommendedTasks = store.recommendTasks();
 
   useEffect(() => {
     if (activeTask && activeTask.status === 'in_progress') {
       const interval = setInterval(() => {
-        updateTaskProgress();
+        store.updateTaskProgress();
       }, 2000);
       return () => clearInterval(interval);
     }
-  }, [activeTask, updateTaskProgress]);
+  }, [activeTask, store]);
 
   useEffect(() => {
     if (taskResult) {
@@ -96,15 +77,6 @@ export const TaskHall: React.FC = () => {
     }
   }, [battleLog]);
 
-  useEffect(() => {
-    if (notification) {
-      const timer = setTimeout(() => {
-        setNotification(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [notification, setNotification]);
-
   const toggleMember = (memberId: string) => {
     setSelectedMembers((prev) =>
       prev.includes(memberId) ? prev.filter((id) => id !== memberId) : [...prev, memberId]
@@ -113,7 +85,7 @@ export const TaskHall: React.FC = () => {
 
   const handleStartTask = () => {
     if (!selectedTask || selectedMembers.length === 0) return;
-    const success = startTask(selectedTask.id, selectedMembers);
+    const success = store.startTask(selectedTask.id, selectedMembers);
     if (success) {
       setSelectedTask(null);
       setSelectedMembers([]);
@@ -121,7 +93,7 @@ export const TaskHall: React.FC = () => {
   };
 
   const handleClaimReward = () => {
-    clearTaskResult();
+    store.clearTaskResult();
     setShowResultModal(false);
   };
 
@@ -139,15 +111,6 @@ export const TaskHall: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {notification && (
-        <div className="fixed top-4 right-4 z-50 fantasy-card p-4 border-amber-500/50 bg-amber-900/30 animate-pulse">
-          <div className="flex items-center gap-2 text-amber-400">
-            <AlertTriangle size={18} />
-            <span>{notification}</span>
-          </div>
-        </div>
-      )}
-
       <div className="fantasy-card p-5">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">

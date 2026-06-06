@@ -29,12 +29,8 @@ const buildingIcons: Record<string, string> = {
 };
 
 export const Leaderboard: React.FC = () => {
-  const { player, guild, rankings, getRankingGuildDetail } = useGameStore((s) => ({
-    player: s.player,
-    guild: s.guild,
-    rankings: s.rankings,
-    getRankingGuildDetail: s.getRankingGuildDetail,
-  }));
+  const store = useGameStore();
+  const { player, guild, rankings } = store;
 
   const [activeRanking, setActiveRanking] = useState<RankingType>('reputation');
   const [selectedGuildId, setSelectedGuildId] = useState<string | null>(null);
@@ -45,7 +41,7 @@ export const Leaderboard: React.FC = () => {
 
   const selectedGuild = currentRankings.find((r) => r.guildId === selectedGuildId);
   const guildDetail: RankingGuildDetail | null = selectedGuildId
-    ? getRankingGuildDetail(selectedGuildId)
+    ? store.getRankingGuildDetail(selectedGuildId)
     : null;
 
   const expPercent = Math.min(100, (player.exp / player.expToNext) * 100);

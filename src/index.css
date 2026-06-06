@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #0f0d15 0%, #1a1625 50%, #0f0d15 100%);
+  min-height: 100vh;
+  color: #e5e7eb;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1625;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c3aed, #5b21b6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8b5cf6, #7c3aed);
+}
+
+@layer components {
+  .fantasy-card {
+    @apply bg-gradient-to-br from-purple-900/20 to-amber-900/10 border border-purple-700/30 rounded-xl backdrop-blur-sm;
+  }
+  
+  .fantasy-btn {
+    @apply px-4 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+  }
+  
+  .fantasy-btn-primary {
+    @apply fantasy-btn bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 text-white shadow-lg shadow-purple-900/50;
+  }
+  
+  .fantasy-btn-gold {
+    @apply fantasy-btn bg-gradient-to-r from-amber-500 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-black shadow-lg shadow-amber-900/50;
+  }
+  
+  .fantasy-btn-danger {
+    @apply fantasy-btn bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white shadow-lg shadow-red-900/50;
+  }
+  
+  .fantasy-input {
+    @apply w-full px-4 py-2 bg-purple-950/50 border border-purple-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all;
+  }
+  
+  .fantasy-badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold;
+  }
+  
+  .stat-bar {
+    @apply h-2 rounded-full overflow-hidden bg-gray-800;
+  }
+  
+  .stat-bar-fill {
+    @apply h-full rounded-full transition-all duration-500;
+  }
+}
